@@ -45,8 +45,14 @@ INTERNAL_IPS = [
 
 # Application definition
 
-INSTALLED_APPS = [
-    'debug_toolbar',
+if DEBUG:
+    INSTALLED_APPS = [
+        'debug_toolbar',
+    ]
+else:
+    INSTALLED_APPS = []
+
+INSTALLED_APPS += [
     'admin_two_factor.apps.TwoStepVerificationConfig',
     'config',
     'layout',
