@@ -2,6 +2,7 @@ from datetime import datetime
 import os
 from uuid import uuid4
 
+from dotenv import load_dotenv
 from django.conf import settings
 from django.contrib.auth.decorators import user_passes_test
 from django.http import JsonResponse
@@ -136,8 +137,15 @@ def upload_image(request):
 
 
 def allergen_plot():
+    load_dotenv('../config/.env')
+    db_name = os.getenv('DB_NAME')
+    db_user = os.getenv('DB_USER')
+    db_password = os.getenv('DB_PASSWORD')
+    db_host = os.getenv('DB_HOST')
+    db_port = os.getenv('DB_PORT')
+    db_url = 'postgresql+psycopg2://' + db_user + ':' + db_password + '@' + db_host + ':' + db_port + '/' + db_name
     engine = create_engine(
-        'postgresql+psycopg2://asche:HP!j?br$mep6oS3$@localhost:8888/professional_site'
+        db_url,
     )
     df: pd.DataFrame = pd.read_sql_table('allergen_data', engine, parse_dates=['true_date'])
     df.where(df['true_date'] > '2024-04-01', inplace=True)
