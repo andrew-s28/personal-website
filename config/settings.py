@@ -122,7 +122,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'professional_site',
+        'NAME': os.getenv('DB_NAME'),
         'USER': os.getenv('DB_USER'),
         'PASSWORD': os.getenv('DB_PASSWORD'),
         'HOST': os.getenv('DB_HOST'),
@@ -176,8 +176,8 @@ if DEBUG:
     STATIC_ROOT = BASE_DIR / 'static'
     MEDIA_ROOT = BASE_DIR / 'media'
 else:
-    STATIC_ROOT = '/var/www/andrewscherer.info/static/'
-    MEDIA_ROOT = '/var/www/andrewscherer.info/media/'
+    STATIC_ROOT = os.getenv('STATIC_ROOT')
+    MEDIA_ROOT = os.getenv('MEDIA_ROOT')
 
 STATIC_URL = 'static/'
 MEDIA_URL = '/media/'
@@ -207,7 +207,7 @@ EMAIL_USE_TLS = bool(os.getenv('EMAIL_USE_TLS'))
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
 NOTIFY_EMAIL = os.getenv('NOTIFY_EMAIL')
 ADMINS = (
-    ('Andrew Scherer', 'andrew@andrewscherer.info'),
+    (os.getenv('ADMIN_NAME'), os.getenv('ADMIN_EMAIL')),
 )
 MANAGERS = ADMINS
 LOGGING = {
@@ -231,8 +231,6 @@ LOGGING = {
     }
 }
 
-MANAGERS = ADMINS
-
 DATA_UPLOAD_MAX_MEMORY_SIZE = 5*1024**2
 
 TAGGIT_CASE_INSENSITIVE = True
@@ -249,9 +247,9 @@ SASS_OUTPUT_STYLE = 'compact'
 
 RECAPTCHA_PUBLIC_KEY = os.getenv('RECAPTCHA_PUBLIC_KEY')
 RECAPTCHA_PRIVATE_KEY = os.getenv('RECAPTCHA_PRIVATE_KEY')
-RECAPTCHA_REQUIRED_SCORE = 0.50
+RECAPTCHA_REQUIRED_SCORE = 0.75
 
-ADMIN_TWO_FACTOR_NAME = 'PROJECT_NAME'
+ADMIN_TWO_FACTOR_NAME = 'personal-website'
 
 TINYMCE_DEFAULT_CONFIG = {
     "theme": "silver",
@@ -269,7 +267,7 @@ TINYMCE_DEFAULT_CONFIG = {
         "visualblocks code fullscreen insertdatetime media table powerpaste "
         "advcode help wordcount spellchecker typography",
     "selector": "textarea",
-    "images_upload_url": '/blog/upload_image/',
+    "images_upload_url": "/blog/upload_image/",
     "content_css": 'dark',
     "skin": 'oxide-dark',
 }
